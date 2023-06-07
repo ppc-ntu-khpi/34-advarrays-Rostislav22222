@@ -1,15 +1,40 @@
 import java.util.Arrays;
+import java.util.stream.Stream;
 
+
+ /**
+ * The class Main
+ */ 
 public class Main {
 
-    public static void main(String[] args) {
-        int [][] matrix = new int[3][3];
-        int x=0;
 
-        for(int[] row:matrix)
-            Arrays.fill(row,x);
+/** 
+ *
+ * Main
+ *І
+ * @param args  the args. 
+ */
+    public static void main(String[] args) { 
 
-        for(int[] row:matrix)
-            System.out.println(Arrays.toString(row));
+        int[][] matrix = {
+            {5, 2, 3},
+            {4, 1, 3},
+            {9, 2, 8}
+        };
+
+        int[] flattened = Arrays.stream(matrix)
+                                .flatMapToInt(Arrays::stream)
+                                .toArray();
+
+        int mostFrequentNumber = Arrays.stream(flattened)
+                                       .distinct()
+                                       .boxed()
+                                       .max((a, b) -> 
+                                           (int) Arrays.stream(flattened).filter(x -> x == a).count() -
+                                           (int) Arrays.stream(flattened).filter(x -> x == b).count()
+                                       )
+                                       .orElse(0);
+
+        System.out.println("Most frequent number: " + mostFrequentNumber);
     }
 }
